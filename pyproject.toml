@@ -12,7 +12,9 @@ dependencies = [
     "python-dotenv>=1.0",
     "pymupdf>=1.24",
     "anthropic>=0.40",
-    "elevenlabs>=1.0",
+    "kokoro>=0.9.4",
+    "soundfile",
+    "pydub>=0.25",
     "mutagen>=1.47",  # MP3 metadata/ID3 tags
 ]
 

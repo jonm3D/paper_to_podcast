@@ -4,7 +4,7 @@ Convert academic papers from your Zotero library into podcast-style audio review
 
 ## Overview
 
-Paper Podcast extracts text and figures from PDFs in your Zotero library, uses Claude to clean the content and generate a two-host discussion script, then converts it to audio using ElevenLabs TTS. The result is a podcast episode designed to help you deeply understand papers before your qualifying exam.
+Paper Podcast extracts text and figures from PDFs in your Zotero library, uses Claude to generate a narrated audio summary, then converts it to speech using Kokoro TTS (local, free). The result is a ~10 minute audio review designed to help you deeply understand papers before your qualifying exam.
 
 ## Features
 
@@ -14,8 +14,8 @@ Paper Podcast extracts text and figures from PDFs in your Zotero library, uses C
   - Cleans and structures extracted text into markdown
   - Describes figures using vision capabilities
   - Filters out ads and artifacts from extracted images
-  - Generates in-depth two-host discussion scripts
-- **Two-Host Dialogue**: Creates natural conversation between HOST_A and HOST_B with distinct voices
+  - Generates single-narrator audio summaries written for the ear
+- **Narrated Summary**: Direct-to-listener format with natural pacing cues, no fake dialogue
 - **PhD Qual Focus**: Prompts are tailored for qualifying exam preparation with:
   - Faithful paper walkthrough (methodology, equations, figures)
   - Critical analysis and limitations
@@ -26,6 +26,9 @@ Paper Podcast extracts text and figures from PDFs in your Zotero library, uses C
 ## Installation
 
 ```bash
+# System dependencies (macOS)
+brew install espeak-ng ffmpeg
+
 # Clone the repository
 git clone git@github.com:jonm3D/paper_to_podcast.git
 cd paper_to_podcast
@@ -36,11 +39,10 @@ pip install -e .
 
 ## Configuration
 
-Create a `.env` file in the project root with your API keys:
+Create a `.env` file in the project root:
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
-ELEVENLABS_API_KEY=...
 ```
 
 Optionally set your Zotero data directory (defaults to `~/Zotero`):
@@ -97,7 +99,7 @@ result = create_podcast(markdown, title, output_dir)
 ```
 output/
 └── paper_title/
-    ├── podcast_script.txt    # Generated dialogue script
+    ├── script.txt            # Generated narration script
     └── Paper_Title.mp3       # Audio file with ID3 metadata
 ```
 
@@ -120,7 +122,7 @@ paper-podcasts/
 │       ├── zotero.py     # Zotero SQLite integration
 │       ├── pdf.py        # PDF text/figure extraction
 │       ├── review.py     # Claude API for cleaning/figures
-│       └── tts.py        # Script generation & ElevenLabs TTS
+│       └── tts.py        # Script generation & Kokoro TTS
 └── output/               # Default output directory
 ```
 
@@ -139,14 +141,13 @@ paper-podcasts/
    - Describe figures using vision capabilities
    - Filter out advertisements and artifacts
 
-4. **Script Generation**: Claude generates a ~20-30 minute two-host discussion with:
+4. **Script Generation**: Claude generates a ~10 minute single-narrator summary with:
    - Part 1: Faithful walkthrough of the paper
-   - Part 2: Critical analysis and exam preparation
+   - Part 2: Critical analysis and committee prep
 
-5. **Audio Synthesis**: ElevenLabs converts the script to audio:
-   - HOST_A: "josh" voice (deep male)
-   - HOST_B: "rachel" voice (calm female)
-   - Segments are concatenated into a single MP3
+5. **Audio Synthesis**: Kokoro TTS converts the script to audio locally (no API key needed):
+   - Single narrator voice ("af_heart")
+   - Paragraphs synthesized with natural pauses and exported as MP3
 
 ## Dependencies
 
@@ -154,7 +155,9 @@ paper-podcasts/
 - `python-dotenv` - Environment variable loading
 - `pymupdf` - PDF text and image extraction
 - `anthropic` - Claude API client
-- `elevenlabs` - Text-to-speech API
+- `kokoro` - Kokoro TTS (local text-to-speech, ~82M params)
+- `soundfile` - WAV audio I/O
+- `pydub` - WAV-to-MP3 conversion (requires ffmpeg)
 - `mutagen` - MP3 ID3 metadata
 
 ## Requirements
@@ -162,13 +165,15 @@ paper-podcasts/
 - Python 3.10+
 - Zotero with local storage (not cloud-only)
 - Anthropic API key
-- ElevenLabs API key
+- `espeak-ng` (phonemizer for Kokoro)
+- `ffmpeg` (MP3 encoding via pydub)
 
 ## Notes
 
 - The tool reads your Zotero database in read-only mode and never modifies it
-- Processing a single paper uses approximately 10-20k tokens (Claude) and 15-25k characters (ElevenLabs)
-- Audio generation can take several minutes for long discussions
+- Processing a single paper uses approximately 10-20k tokens (Claude); TTS is free and local
+- The Kokoro model (~300MB) is auto-downloaded from HuggingFace on first run
+- Audio generation runs locally on CPU (Apple Silicon works well) and takes a few minutes for ~10 min episodes
 - The podcast prompt is tailored for a geosciences PhD candidate but can be customized in `tts.py`
 
 ## License
