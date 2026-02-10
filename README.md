@@ -1,10 +1,10 @@
-# Paper Podcast
+# Hearsay
 
-Convert academic papers from your Zotero library into podcast-style audio reviews for PhD qualifying exam preparation.
+Convert academic papers from your Zotero library into audio reviews for PhD qualifying exam preparation.
 
 ## Overview
 
-Paper Podcast extracts text and figures from PDFs in your Zotero library, uses Claude to generate a narrated audio summary, then converts it to speech using Kokoro TTS (local, free). The result is a ~10 minute audio review designed to help you deeply understand papers before your qualifying exam.
+Hearsay extracts text and figures from PDFs in your Zotero library, uses Claude to generate a narrated audio summary, then converts it to speech using Kokoro TTS (local, free). The result is a ~10 minute audio review designed to help you deeply understand papers before your qualifying exam.
 
 ## Features
 
@@ -30,8 +30,8 @@ Paper Podcast extracts text and figures from PDFs in your Zotero library, uses C
 brew install espeak-ng ffmpeg
 
 # Clone the repository
-git clone git@github.com:jonm3D/paper_to_podcast.git
-cd paper_to_podcast
+git clone git@github.com:jonm3D/hearsay.git
+cd hearsay
 
 # Install in development mode
 pip install -e .
@@ -57,13 +57,13 @@ ZOTERO_DATA_DIR=/path/to/Zotero
 
 ```bash
 # Process a paper from a specific collection
-paper-podcast --collection "Qualifying Exam"
+hearsay --collection "Qualifying Exam"
 
 # Search across your entire library
-paper-podcast --search "coastal erosion"
+hearsay --search "coastal erosion"
 
 # Specify output directory
-paper-podcast --collection "Papers" --output-dir ./podcasts
+hearsay --collection "Papers" --output-dir ./podcasts
 ```
 
 ### Interactive Selection
@@ -73,10 +73,10 @@ When you run the command, you'll be presented with papers in the collection and 
 ### Python API
 
 ```python
-from paper_podcast.zotero import get_collections, get_papers_in_collection, search_papers
-from paper_podcast.pdf import extract_text_raw, extract_figures
-from paper_podcast.review import process_paper
-from paper_podcast.tts import create_podcast
+from hearsay.zotero import get_collections, get_papers_in_collection, search_papers
+from hearsay.pdf import extract_text_raw, extract_figures
+from hearsay.review import process_paper
+from hearsay.tts import create_podcast
 
 # List collections
 collections = get_collections()
@@ -105,7 +105,7 @@ output/
 
 The MP3 includes metadata:
 - **Title**: Paper title
-- **Artist**: "Paper Podcast"
+- **Artist**: "Hearsay"
 - **Album**: "PhD Qual Prep"
 - **Year**: Generation date
 - **Comment**: Generation timestamp
@@ -113,10 +113,10 @@ The MP3 includes metadata:
 ## Project Structure
 
 ```
-paper-podcasts/
+hearsay/
 ├── pyproject.toml
 ├── src/
-│   └── paper_podcast/
+│   └── hearsay/
 │       ├── __init__.py
 │       ├── cli.py        # CLI entry point
 │       ├── zotero.py     # Zotero SQLite integration

@@ -491,7 +491,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 2:
         # Try to use a paper from Zotero
-        from paper_podcast.zotero import get_papers_in_collection
+        from hearsay.zotero import get_papers_in_collection
 
         papers = get_papers_in_collection("Texas Coast")
         papers_with_pdf = [p for p in papers if p.pdf_path]

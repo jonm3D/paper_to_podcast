@@ -204,7 +204,7 @@ def process_paper(
     Returns:
         Dictionary with paths and metadata.
     """
-    from paper_podcast.pdf import extract_text_raw, extract_figures as pdf_extract_figures
+    from hearsay.pdf import extract_text_raw, extract_figures as pdf_extract_figures
 
     # Create paper folder
     paper_slug = slugify(title)
@@ -321,7 +321,7 @@ def _insert_figure_descriptions(
 
 # Test when run directly
 if __name__ == "__main__":
-    from paper_podcast.zotero import get_papers_in_collection
+    from hearsay.zotero import get_papers_in_collection
 
     papers = get_papers_in_collection("Texas Coast")
     paper = [p for p in papers if p.pdf_path and "ICESat-2" in p.title][0]

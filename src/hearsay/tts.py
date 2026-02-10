@@ -119,7 +119,7 @@ Generate the full narrated summary:"""
 def set_mp3_metadata(
     mp3_path: Path,
     title: str,
-    artist: str = "Paper Podcast",
+    artist: str = "Hearsay",
     album: str = "PhD Qual Prep",
     year: str = None,
     comment: str = None,
@@ -235,7 +235,7 @@ def generate_audio(
     set_mp3_metadata(
         output_path,
         title=title,
-        artist="Paper Podcast",
+        artist="Hearsay",
         album="PhD Qual Prep",
         comment=f"Generated {datetime.now().strftime('%Y-%m-%d')} with Kokoro TTS",
     )
@@ -293,7 +293,7 @@ def create_podcast(
 if __name__ == "__main__":
     print(f"Default voice: {DEFAULT_VOICE}")
     print("\nQuick synthesis test...")
-    test_text = "This is a test of the paper podcast narration pipeline. The audio should be clear and natural."
+    test_text = "This is a test of the hearsay narration pipeline. The audio should be clear and natural."
     output = Path("test_narration.mp3")
     generate_audio(test_text, output, "Test Narration")
     print(f"Saved: {output} ({output.stat().st_size / 1024:.0f} KB)")
